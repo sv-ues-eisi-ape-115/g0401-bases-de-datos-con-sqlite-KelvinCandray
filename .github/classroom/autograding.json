@@ -1,0 +1,254 @@
+{
+  "tests": [
+    {
+      "name": "T01.1 — Las 4 tablas existen",
+      "setup": "sudo apt-get install -y sqlite3 -qq 2>/dev/null; chmod +x tests/grade.sh",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T01.1",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T01.2 — PRAGMA foreign_keys activo",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T01.2",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T01.3 — CHECK(precio > 0) funciona",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T01.3",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 3
+    },
+    {
+      "name": "T01.4 — Datos de prueba suficientes",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T01.4",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T01.5 — Script idempotente",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T01.5",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T02.1 — Contiene JOIN",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T02.1",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T02.2 — Contiene GROUP BY",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T02.2",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T02.3 — Usa julianday()",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T02.3",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T02.4 — LEFT JOIN + IS NULL",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T02.4",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T02.5 — Usa || para concatenar",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T02.5",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 4
+    },
+    {
+      "name": "T03.1 — Subconsulta escalar",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T03.1",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T03.2 — NOT IN",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T03.2",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T03.3 — Subconsulta correlacionada",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T03.3",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T03.4 — HAVING",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T03.4",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T04.1 — Vista vw_prestamo_activo",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T04.1",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T04.2 — Vista vw_libro_disponibilidad",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T04.2",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T04.3 — Trigger trg_prestamo_nuevo",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T04.3",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T04.4 — Trigger trg_prestamo_devuelto",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T04.4",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T04.5 — RAISE(ROLLBACK) en trigger",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T04.5",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 5
+    },
+    {
+      "name": "T05.1 — setup.sh con shebang",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T05.1",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 2
+    },
+    {
+      "name": "T05.2 — consultar.sh recibe argumento",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T05.2",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 2
+    },
+    {
+      "name": "T05.3 — reporte.sh usa heredoc",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T05.3",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 3
+    },
+    {
+      "name": "T05.4 — setup.sh valida sqlite3",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T05.4",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 3
+    },
+    {
+      "name": "T06.1 — PRAGMA FK en todos los SQL",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T06.1",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 2
+    },
+    {
+      "name": "T06.2 — Nomenclatura estándar APE115",
+      "setup": "",
+      "run": "bash tests/grade.sh",
+      "input": "",
+      "output": "T06.2",
+      "comparison": "included",
+      "timeout": 60,
+      "points": 3
+    }
+  ]
+}

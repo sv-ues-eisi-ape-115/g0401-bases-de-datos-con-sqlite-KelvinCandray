@@ -1,0 +1,22 @@
+# Bases de datos generadas (no subir al repositorio)
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos de resultado del autograder
+grade_output.txt
+resultado*.txt
+reporte_*.txt
+
+# Backups
+backups/
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# Directorio de trabajo del estudiante
+lab_g0401/

@@ -1,0 +1,71 @@
+name: G0401 — Autocalificación SQLite
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  grade:
+    name: Evaluar Requerimientos G0401
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+
+    steps:
+      # 1. Clonar el repositorio del estudiante
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Instalar sqlite3
+      - name: Instalar sqlite3
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y sqlite3
+          sqlite3 --version
+
+      # 3. Dar permisos de ejecución al autograder y scripts R05
+      - name: Permisos de ejecución
+        run: |
+          chmod +x tests/grade.sh
+          find requerimientos/R05 -name "*.sh" -exec chmod +x {} \; 2>/dev/null || true
+
+      # 4. Ejecutar el autograder
+      - name: Ejecutar tests
+        id: grade
+        run: |
+          bash tests/grade.sh 2>&1 | tee grade_output.txt
+          SCORE=$(cat /tmp/g0401_score.txt 2>/dev/null || echo "0")
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+          echo ""
+          echo "Score final: $SCORE / 100"
+
+      # 5. Mostrar puntuación como summary de GitHub
+      - name: Publicar resultado
+        if: always()
+        run: |
+          SCORE=$(cat /tmp/g0401_score.txt 2>/dev/null || echo "0")
+          echo "## 📊 Resultado G0401 — Bases de Datos con SQLite" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Criterio | Puntos |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| R01 — DDL Biblioteca | /20 |" >> $GITHUB_STEP_SUMMARY
+          echo "| R02 — Consultas DML  | /20 |" >> $GITHUB_STEP_SUMMARY
+          echo "| R03 — Subconsultas   | /20 |" >> $GITHUB_STEP_SUMMARY
+          echo "| R04 — Vistas/Triggers| /25 |" >> $GITHUB_STEP_SUMMARY
+          echo "| R05 — Scripts Bash   | /10 |" >> $GITHUB_STEP_SUMMARY
+          echo "| Estándares           |  /5 |" >> $GITHUB_STEP_SUMMARY
+          echo "| **TOTAL**            | **$SCORE/100** |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat grade_output.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      # 6. Subir artefacto con la salida completa
+      - name: Guardar salida
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: grade-output-${{ github.sha }}
+          path: grade_output.txt
+          retention-days: 30
