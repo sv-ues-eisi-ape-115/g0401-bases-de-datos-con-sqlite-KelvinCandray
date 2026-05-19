@@ -1,45 +1,55 @@
--- =============================================================
--- G0401 — APE 115 — Requerimiento R02
--- Archivo: requerimientos/R02/biblioteca_consultas.sql
--- Descripción: Consultas DML — Reportes de la biblioteca
--- Autor: (escribe tu nombre aquí)
--- Prerequisito: R01/biblioteca_ddl.sql ejecutado
--- Ejecutar: sqlite3 biblioteca.db < biblioteca_consultas.sql
--- =============================================================
+--
+-- Requerimiento R02 — Consultas DML — Reportes de la Biblioteca
+--
 
-PRAGMA foreign_keys = ON;
+-- Asegurar la correcta visualización de las columnas en la terminal
 .headers on
 .mode column
 
--- ── R02.1 — Libros disponibles con autor ──────────────────────
--- INNER JOIN libro → autor. Filtrar stock_disponible > 0. Ordenar por título.
--- TODO:
 
 
--- ── R02.2 — Estudiantes con préstamos activos ─────────────────
--- INNER JOIN 3 tablas: prestamo → estudiante → libro
--- Mostrar nombre completo (con ||), carnet, título, fecha_devolucion
--- Ordenar por fecha más próxima
--- TODO:
+-- 1: Todos los libros disponibles (stock_disponible > 0) con nombre del autor, ordenados por título.
 
+SELECT l.titulo, a.nombre AS autor, l.stock_disponible
+FROM libros l JOIN autores a ON l.id_autor = a.id_autor
+WHERE l.stock_disponible > 0
+ORDER BY l.titulo ASC;
 
--- ── R02.3 — Top 3 libros más prestados ────────────────────────
--- GROUP BY + COUNT + LIMIT 3
--- TODO:
+-- 2: Estudiantes con préstamos activos: nombre completo con ||, carnet, título del libro y fecha de devolución; ordenar por fecha más próxima
 
+SELECT (e.nombres || ' ' || e.apellidos) AS estudiante_completo, e.carnet, l.titulo AS titulo_libro, p.fecha_devolucion
+FROM prestamos p JOIN estudiantes e ON p.id_estudiante = e.id_estudiante
+JOIN libros l ON p.id_libro = l.id_libro
+WHERE p.estado = 'activo'
+ORDER BY p.fecha_devolucion ASC;
 
--- ── R02.4 — Préstamos vencidos con días de retraso ────────────
--- fecha_devolucion < date('now') Y estado='activo'
--- dias_retraso = CAST(julianday(date('now')) - julianday(fecha_devolucion) AS INTEGER)
--- TODO:
+--  3: Top 3 libros con mayor número de préstamos históricos (incluye devueltos). Usar GROUP BY + COUNT.
 
+SELECT l.titulo, COUNT(p.id_prestamo) AS total_prestamos
+FROM libros l JOIN prestamos p ON l.id_libro = p.id_libro
+GROUP BY l.id_libro, l.titulo
+ORDER BY total_prestamos DESC
+LIMIT 3;
 
--- ── R02.5 — Estadísticas por carrera ──────────────────────────
--- Mostrar: carrera, total_estudiantes, prestamos_activos, prestamos_devueltos
--- LEFT JOIN + GROUP BY + SUM(CASE WHEN ...)
--- TODO:
+-- 4: Préstamos vencidos: fecha_devolucion < date('now') y estado = 'activo'. Mostrar nombre del estudiante, título del libro y días de retraso calculado con julianday(date('now')) - julianday(fecha_devolucion).
 
+SELECT (e.nombres || ' ' || e.apellidos) AS estudiante, l.titulo AS titulo_libro, p.fecha_devolucion,
+CAST(julianday(date('now')) - julianday(p.fecha_devolucion) AS INTEGER) AS dias_retraso
+FROM prestamos p JOIN estudiantes e ON p.id_estudiante = e.id_estudiante
+JOIN libros l ON p.id_libro = l.id_libro WHERE p.fecha_devolucion < date('now')
+  AND p.estado = 'activo';
 
--- ── R02.6 — Libros NUNCA prestados ────────────────────────────
--- LEFT JOIN libro → prestamo WHERE id_prestamo IS NULL
--- TODO:
+-- 5: Estadísticas por carrera: total de estudiantes, préstamos activos y devueltos. Usar GROUP BY + COUNT con LEFT JOIN.
+
+SELECT e.carrera, COUNT(DISTINCT e.id_estudiante) AS total_estudiantes,
+COUNT(CASE WHEN p.estado = 'activo' THEN 1 END) AS prestamos_activos,
+COUNT(CASE WHEN p.estado = 'devuelto' THEN 1 END) AS prestamos_devueltos
+FROM estudiantes e LEFT JOIN prestamos p ON e.id_estudiante = p.id_estudiante
+GROUP BY e.carrera;
+
+-- 6: Libros que NUNCA han sido prestados usando LEFT JOIN + WHERE id_prestamo IS NULL.
+
+SELECT l.id_libro, l.titulo
+FROM libros l
+LEFT JOIN prestamos p ON l.id_libro = p.id_libro
+WHERE p.id_prestamo IS NULL;
